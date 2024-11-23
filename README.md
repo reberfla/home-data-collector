@@ -20,26 +20,26 @@ In the end the Project should run in a K3S cluster. In the current phase it is d
 
 ### Running the service
 
-* build the docker image (see [README.Docker.md](https://github.com/FleiVa-C/home-data-collector/blob/master/README.Docker.md))
+* build the docker image (see [README.Docker.md](https://github.com/reberfla/home-data-collector/blob/master/README.Docker.md))
 * get the relevant files onto your device:
 ```
-wget https://githubusercontent.com/FleiVa-C/home-data-collector/master/compose.yml
-wget https://githubusercontent.com/FleiVa-C/home-data-collector/master/collector_config_template.yml
-wget https://githubusercontent.com/FleiVa-C/home-data-collector/master/backend_config_template.yml
+wget https://githubusercontent.com/reberfla/home-data-collector/master/compose.yml
+wget https://githubusercontent.com/reberfla/home-data-collector/master/collector_config_template.yml
+wget https://githubusercontent.com/reberfla/home-data-collector/master/backend_config_template.yml
 ```
 * create `.env` file, add variables `DB_USER`, `DB_PASS` and `SQL_PASS`
 * run the application: `docker compose up`
 
 ## Author
 
-* [@FleiVa-c](https://github.com/FleiVa-C)
+* [@reberfla](https://github.com/reberfla)
 
 ## Version History
 * no "release" yet - see [Notes](#notes)
 
 ## License
 
-This project is licensed under the [MIT] License - see the [`LICENSE.md`](https://github.com/FleiVa-C/home-data-collector/blob/master/LICENCE.md) for details.
+This project is licensed under the [MIT] License - see the [`LICENSE.md`](https://github.com/reberfla/home-data-collector/blob/master/LICENCE.md) for details.
 
 ## Acknowledgments
 
