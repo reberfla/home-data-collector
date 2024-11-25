@@ -1,14 +1,13 @@
 name: Create and Publish the Docker images to ghcr.io
 
 on:
-  # push:
-  #   branches:
-  #     - 'master'
+  push:
+    branches:
+      - 'master'
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  USERNAME: reberfla
   IMAGE_NAME_BACKEND: hdc-server
   IMAGE_NAME_COLLECTOR: hdc-collector
 
@@ -31,15 +30,15 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ env.USERNAME }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Restore Cached Target Directory
-        id: restore-cache-target
-        uses: actions/cache/restore@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: target-artifacts
+      # - name: Restore Cached Target Directory
+      #   id: restore-cache-target
+      #   uses: actions/cache/restore@v4
+      #   with:
+      #     path: /tmp/.buildx-cache
+      #     key: target-artifacts
       
       - name: Build and push Docker images
         id: build-push
