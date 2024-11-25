@@ -1,9 +1,6 @@
 name: Create and Publish the Docker images to ghcr.io
 
 on:
-  push:
-    branches:
-      - 'master'
   workflow_dispatch:
 
 env:
@@ -33,12 +30,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Restore Cached Target Directory
-      #   id: restore-cache-target
-      #   uses: actions/cache/restore@v4
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: target-artifacts
+      - name: Restore Cached Target Directory
+        id: restore-cache-target
+        uses: actions/cache/restore@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: target-artifacts
       
       - name: Build and push Docker images
         id: build-push

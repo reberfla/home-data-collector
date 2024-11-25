@@ -13,7 +13,7 @@
     "server": {
       "target": "final-server",
       "tags": [
-        "ghcr.io/fleiva-c/hdc-server"
+        "ghcr.io/reberfla/hdc-server"
       ],
       "platforms": ["linux/amd64", "linux/arm64/v8", "linux/arm/v7"]
     }
@@ -22,7 +22,7 @@
     "collector": {
       "target": "final-collector",
       "tags": [
-        "ghcr.io/fleiva-c/hdc-collector"
+        "ghcr.io/reberfla/hdc-collector"
       ],
       "platforms": ["linux/amd64", "linux/arm64/v8", "linux/arm/v7"]
     }
