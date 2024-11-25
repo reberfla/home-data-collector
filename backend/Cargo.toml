@@ -14,7 +14,7 @@ env_logger = "0.10.0"
 log = "0.4.20"
 strum_macros = "0.25.2"
 strum = { version = "0.25", features = ["derive"]}
-surrealdb = "1.0.0"
+surrealdb = "2.1.0"
 derive_more = "0.99.17"
 futures = "0.3.29"
 serde_json = "1.0.107"

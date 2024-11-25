@@ -42,7 +42,7 @@ impl SDBRepository {
         let created: Option<InterfaceModel> = self
             .db
             .create(("interface", interface.get_uuid().clone().unwrap()))
-            .content(&interface)
+            .content(interface)
             .await
             .map_err(|e| Error::Db {
                 error: e,
@@ -107,7 +107,7 @@ impl SDBRepository {
                 let updated: Option<InterfaceModel> = self
                     .db
                     .update(("interface", interface.get_uuid().clone().unwrap()))
-                    .content(&interface)
+                    .content(interface)
                     .await
                     .map_err(|e| Error::Db {
                         error: e,

@@ -64,8 +64,8 @@ impl SDBRepository {
                 .db
                 .select(&signal)
                 .range((
-                    Bound::Included(data.time_from as i32),
-                    Bound::Included(data.time_to as i32),
+                    Bound::Included(data.time_from),
+                    Bound::Included(data.time_to),
                 ))
                 .await;
 

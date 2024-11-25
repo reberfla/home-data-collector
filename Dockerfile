@@ -4,7 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/go/dockerfile-reference/
 
-ARG RUST_VERSION=1.77.1
+ARG RUST_VERSION=1.82.0
 ARG WORKSPACE_NAME=hdc
 ARG SERVER_NAME=hdc-server
 ARG COLLECTOR_NAME=hdc-collector

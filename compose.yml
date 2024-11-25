@@ -3,6 +3,7 @@ services:
   surrealdb:
     image: surrealdb/surrealdb:latest
     restart: always
+    user: root
     entrypoint: 
       - /surreal 
       - start 
@@ -10,13 +11,13 @@ services:
       - ${DB_USER}
       - --pass
       - ${DB_PASS}
-      - --auth
+      - rocksdb:/data/surreal_db
     env_file:
       - ./.env
     ports:
       - 8000:8000
     volumes:
-      - "./surreal:/surreal_db"
+      - "./data:/surreal_db"
     healthcheck:
       test: ["CMD", "isready"] 
       interval: 30s
@@ -25,20 +26,8 @@ services:
       start_period: 10s
       start_interval: 5s
 
-  mysqldb:
-    image: mysql
-    restart: always
-    env_file:
-      - ./.env
-    volumes:
-      - "./mysql:/var/lib/mysql"
-    environment:
-      MYSQL_ROOT_PASSWORD: "${SQL_PASS}"
-    ports:
-      - "81:3306"
-
   server:
-    image: ghcr.io/fleiva-c/hdc-server:latest
+    image: ghcr.io/reberfla/hdc-server:latest
     depends_on:
       - surrealdb
     restart: always
@@ -53,7 +42,7 @@ services:
       - DB_PASS=${DB_PASS}
 
   collector:
-    image: ghcr.io/fleiva-c/hdc-collector:latest
+    image: ghcr.io/reberfla/hdc-collector:latest
     restart: always
     volumes:
       - ./collector_config_template.yml:/Config.yml
