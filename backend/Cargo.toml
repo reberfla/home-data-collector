@@ -7,20 +7,20 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1", features = ["full"]}
-actix-web = "4.4"
-uuid = { version = "1.6.1", features = ["v4"]}
-serde = { version = "1.0.188", features = ["derive"]}
-env_logger = "0.10.0"
-log = "0.4.20"
-strum_macros = "0.25.2"
-strum = { version = "0.25", features = ["derive"]}
-surrealdb = "2.1.0"
-derive_more = "0.99.17"
-futures = "0.3.29"
-serde_json = "1.0.107"
-chrono = "0.4.31"
+actix-web = "4.9"
+uuid = { version = "1.11.0", features = ["v4"]}
+serde = { version = "1.0.215", features = ["derive"]}
+env_logger = "0.11.5"
+log = "0.4.22"
+strum_macros = "0.26.4"
+strum = { version = "0.26", features = ["derive"]}
+surrealdb = "2.1.1"
+derive_more = { version = "1.0.0", features = ["full"]}
+futures = "0.3.31"
+serde_json = "1.0.133"
+chrono = "0.4.38"
 hdc_shared = { path = "../shared"}
 actix-cors = "0.7.0"
-serde_with = { version = "3.8.1", features = ["macros"] }
-serde_yml = "0.0.10"
-regex = "1.10.5"
+serde_with = { version = "3.11.0", features = ["macros"] }
+serde_yml = "0.0.12"
+regex = "1.11.1"

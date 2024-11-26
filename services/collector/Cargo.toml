@@ -7,14 +7,14 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 hdc_shared = { path = "../../shared"}
-serde = "1.0.193"
-serde_derive = "1.0.193"
-serde_json = "1.0.107"
-reqwest = {version = "0.11.22", features = ["json", "rustls-tls"], default-features = false}
-log = "0.4.20"
-env_logger = "0.10.1"
-tokio = {version = "1.35.1", features = ["rt-multi-thread", "macros", "time"]}
-uuid = "1.6.1"
-zstd = "0.13.1"
-serde_yml = "0.0.10"
-regex = "1.10.5"
+serde = "1.0.215"
+serde_derive = "1.0.215"
+serde_json = "1.0.133"
+reqwest = {version = "0.12.9", features = ["json", "rustls-tls"], default-features = false}
+log = "0.4.22"
+env_logger = "0.11.5"
+tokio = {version = "1.41.1", features = ["rt-multi-thread", "macros", "time"]}
+uuid = "1.11.0"
+zstd = "0.13.2"
+serde_yml = "0.0.12"
+regex = "1.11.1"

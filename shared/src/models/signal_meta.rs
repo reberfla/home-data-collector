@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::opt::RecordId;
+use surrealdb::opt::Resource::RecordId;
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]

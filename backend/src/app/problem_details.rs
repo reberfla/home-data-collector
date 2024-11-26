@@ -7,7 +7,7 @@ use derive_more::Display;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Display)]
-#[display(fmt = "{:?}{}{}{}{}", error_type, status, title, detail, instance)]
+#[display("{:?}{}{}{}{}", error_type, status, title, detail, instance)]
 pub struct ProblemDetails {
     #[serde(rename(serialize = "type"), skip_serializing_if = "Option::is_none")]
     error_type: Option<String>,
