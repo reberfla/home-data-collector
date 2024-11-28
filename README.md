@@ -9,11 +9,11 @@ The core component is the actix web backend service that provides REST API endpo
 To store all data (not only timeseries data), a surrealdb instance is used. Collection of the timeseries data is managed by a collector service that requests the sensor data at equal intervals and ingests them through the backend REST API's.
 
 ## Notes
-This project is not finished and still under development.
+This project is not finished yet and still under development.
 
 ## Deployment
 
-In the end the Project should run in a K3S cluster. In the current phase it is designed to run on a single host with docker-compose.
+In the current phase it is designed to run on a single host with docker-compose.
 ### Dependencies
 
 * docker (see install [here](https://docs.docker.com/engine/install/))
@@ -27,7 +27,7 @@ wget https://githubusercontent.com/reberfla/home-data-collector/master/compose.y
 wget https://githubusercontent.com/reberfla/home-data-collector/master/collector_config_template.yml
 wget https://githubusercontent.com/reberfla/home-data-collector/master/backend_config_template.yml
 ```
-* create `.env` file, add variables `DB_USER`, `DB_PASS` and `SQL_PASS`
+* create `.env` file, add variables `DB_USER` AND `DB_PASS`
 * run the application: `docker compose up`
 
 ## Author
