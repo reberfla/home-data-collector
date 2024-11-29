@@ -1,39 +1,18 @@
 services:
 
   surrealdb:
+    image: surrealdb/surrealdb:v2.1.2
+    restart: always
     user: root
-    build:
-      args:
-        - DB_USER=root
-        - DB_PASS=root
-      context: ./
-      dockerfile: Dockerfile
-    image: db
+    entrypoint: 
+      - /surreal 
+      - start 
+      - --user
+      - root
+      - --pass
+      - root
+      - rocksdb:/data/surreal_db
     ports:
-      - "80:8000"
+      - 8000:8000
     volumes:
-      - "./surreal:/surreal_db"
-
-  mysqldb:
-    image: mysql
-    restart: always
-    volumes:
-      - "./mysql:/var/lib/mysql"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "81:3306"
-
-  server:
-    image: hdc-server:latest
-    ports:
-      - "8080:8080"
-    restart: always
-    volumes:
-      - ../backend/Config.toml:/app/Config.toml
-
-  collector:
-    image: hdc-collector:latest
-    restart: always
-    volumes:
-      - ../services/collector/Config.toml:/Config.toml
+      - "./data:/surreal_db"
