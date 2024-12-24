@@ -13,7 +13,7 @@ use super::model::InterfaceQuery;
 impl SDBRepository {
     pub async fn register_interface(
         &self,
-        interface: InterfaceModel,
+        interface: Interface,
         instance: &str,
     ) -> Result<(), Error> {
         let mut existing = self
@@ -27,7 +27,7 @@ impl SDBRepository {
                 error: e,
                 instance: instance.to_owned(),
             })?;
-        let result: Vec<InterfaceModel> = existing.take(0).map_err(|e| Error::Db {
+        let result: Vec<Interface> = existing.take(0).map_err(|e| Error::Db {
             error: e,
             instance: instance.to_owned(),
         })?;
@@ -39,7 +39,7 @@ impl SDBRepository {
                 })
             }
         }
-        let created: Option<InterfaceModel> = self
+        let created: Option<Interface> = self
             .db
             .create(("interface", interface.get_uuid().clone().unwrap()))
             .content(interface)
@@ -55,7 +55,7 @@ impl SDBRepository {
     }
 
     pub async fn get_tasks(&self, instance: &str) -> Result<Vec<CollectorTask>, Error> {
-        let response: Vec<InterfaceModel> =
+        let response: Vec<Interface> =
             self.db.select("interface").await.map_err(|e| Error::Db {
                 error: e,
                 instance: instance.to_owned(),
@@ -73,14 +73,14 @@ impl SDBRepository {
         &self,
         interface_query: InterfaceQuery,
         instance: &str,
-    ) -> Result<Vec<InterfaceModel>, Error> {
+    ) -> Result<Vec<Interface>, Error> {
         let sql: String = interface_query.build_sql_query();
         let mut response = self.db.query(sql).await.map_err(|e| Error::Db {
             error: e,
             instance: instance.to_owned(),
         })?;
 
-        let result: Vec<InterfaceModel> = response.take(0).map_err(|e| Error::Db {
+        let result: Vec<Interface> = response.take(0).map_err(|e| Error::Db {
             error: e,
             instance: instance.to_owned(),
         })?;
@@ -89,12 +89,12 @@ impl SDBRepository {
 
     pub async fn update_interface(
         &self,
-        interface: InterfaceModel,
+        interface: Interface,
         uuid: String,
         instance: &str,
     ) -> Result<(), Error> {
         let interface_uuid = interface.get_uuid().unwrap();
-        let existing: Option<InterfaceModel> =
+        let existing: Option<Interface> =
             self.db
                 .select(("interface", uuid))
                 .await
@@ -104,7 +104,7 @@ impl SDBRepository {
                 })?;
         if let Some(test) = existing {
             if interface.check_update(&test) {
-                let updated: Option<InterfaceModel> = self
+                let updated: Option<Interface> = self
                     .db
                     .update(("interface", interface.get_uuid().clone().unwrap()))
                     .content(interface)

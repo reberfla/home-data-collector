@@ -19,7 +19,7 @@ use surrealdb::error::Api;
 use crate::sdb::SDBRepository;
 
 use hdc_shared::models::{
-    interface::InterfaceModel,
+    interface::Interface,
     tasklist::{CollectorTask, Tasklist},
 };
 #[post("v1/interface/register")]
@@ -46,7 +46,7 @@ pub async fn register_interface(
         body.extend_from_slice(&chunk);
     }
     let mut interface =
-        serde_json::from_slice::<InterfaceModel>(&body).map_err(|error| Error::Json {
+        serde_json::from_slice::<Interface>(&body).map_err(|error| Error::Json {
             error,
             instance: instance.to_owned(),
         })?;
@@ -83,9 +83,9 @@ pub async fn query_interface(
     sdb_repo: Data<SDBRepository>,
     query: Query<InterfaceQuery>,
     req: HttpRequest,
-) -> Result<Json<Vec<InterfaceModel>>, Error> {
+) -> Result<Json<Vec<Interface>>, Error> {
     let instance: &str = req.path();
-    let response: Result<Vec<InterfaceModel>, Error> = sdb_repo
+    let response: Result<Vec<Interface>, Error> = sdb_repo
         .query_interfaces(query.clone().into_inner(), instance)
         .await;
     info!("{:?}", query.into_inner());
@@ -123,7 +123,7 @@ pub async fn update_interface(
         body.extend_from_slice(&chunk);
     }
     let mut interface =
-        serde_json::from_slice::<InterfaceModel>(&body).map_err(|e| Error::Json {
+        serde_json::from_slice::<Interface>(&body).map_err(|e| Error::Json {
             error: e,
             instance: instance.to_owned(),
         })?;

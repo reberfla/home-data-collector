@@ -11,21 +11,13 @@ use std::mem::discriminant;
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-#[serde(tag = "interface_type")]
-pub enum InterfaceModel {
-    ShellyV1(Interface<ShellyV1Adapter>),
-    ShellyV2(Interface<ShellyV2Adapter>),
-    WeatherIngestion(Interface<WeatherAdapter>),
+pub enum Adapter {
+    ShellyV1(ShellyV1Adapter),
+    ShellyV2(ShellyV2Adapter),
+    WeatherIngestion(WeatherAdapter),
 }
 
-impl InterfaceModel {
-    pub fn get_url(&self) -> String {
-        match self {
-            Self::ShellyV1(value) => value.url.clone(),
-            Self::ShellyV2(value) => value.url.clone(),
-            Self::WeatherIngestion(value) => value.url.clone(),
-        }
-    }
+impl Adapter {
     pub fn add_uuid(&mut self) {
         match self {
             Self::ShellyV1(value) => value.add_uuid(),
@@ -35,30 +27,27 @@ impl InterfaceModel {
     }
     pub fn get_signals(&self) -> Vec<SignalMeta> {
         match self {
-            Self::ShellyV1(value) => value.signals.get_signals(),
-            Self::ShellyV2(value) => value.signals.get_signals(),
-            Self::WeatherIngestion(value) => value.signals.get_signals(),
+            Self::ShellyV1(value) => value.get_signals(),
+            Self::ShellyV2(value) => value.get_signals(),
+            Self::WeatherIngestion(value) => value.get_signals(),
         }
+    }
+}
+
+impl Interface {
+    pub fn get_url(&self) -> String {
+        self.url.clone()
+    }
+    pub fn get_signals(&self) -> Vec<SignalMeta> {
+        self.signals.get_signals()
     }
     pub fn get_uuid(&self) -> Option<String> {
-        match self {
-            Self::ShellyV1(value) => value.uuid.clone(),
-            Self::ShellyV2(value) => value.uuid.clone(),
-            Self::WeatherIngestion(value) => value.uuid.clone(),
-        }
+        self.uuid.clone()
     }
     pub fn check_update(&self, new_value: &Self) -> bool {
-        if discriminant(self) == discriminant(new_value) {
-            let existing_signals = match self {
-                Self::ShellyV1(value) => value.signals.get_signals(),
-                Self::ShellyV2(value) => value.signals.get_signals(),
-                Self::WeatherIngestion(value) => value.signals.get_signals(),
-            };
-            let update_signals = match new_value {
-                Self::ShellyV1(value) => value.signals.get_signals(),
-                Self::ShellyV2(value) => value.signals.get_signals(),
-                Self::WeatherIngestion(value) => value.signals.get_signals(),
-            };
+        if self == new_value {
+            let existing_signals = self.get_signals();
+            let update_signals = self.signals.get_signals();
             let success: Option<()> = existing_signals
                 .iter()
                 .zip(update_signals.iter())
@@ -81,14 +70,14 @@ impl InterfaceModel {
     }
     pub fn to_task(self) -> Option<CollectorTask> {
         let url: String = self.get_url();
-        let adapter: Option<TaskType> = match self {
-            InterfaceModel::ShellyV1(model) => {
-                Some(TaskType::ShellyV1Task(ShellyV1AdapterLight::from(model.signals)))
+        let adapter: Option<TaskType> = match self.signals {
+            Adapter::ShellyV1(model) => {
+                Some(TaskType::ShellyV1Task(ShellyV1AdapterLight::from(model)))
             }
-            InterfaceModel::ShellyV2(model) => {
-                Some(TaskType::ShellyV2Task(ShellyV2AdapterLight::from(model.signals)))
+            Adapter::ShellyV2(model) => {
+                Some(TaskType::ShellyV2Task(ShellyV2AdapterLight::from(model)))
             }
-            InterfaceModel::WeatherIngestion(_)=> None
+            Adapter::WeatherIngestion(_)=> None
         };
 
         match adapter {
@@ -108,17 +97,15 @@ pub trait IsAdapter {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct Interface<T>
-where
-    T: IsAdapter,
+pub struct Interface
 {
     pub uuid: Option<String>,
     pub name: String,
     pub url: String,
-    pub signals: T,
+    pub signals: Adapter,
 }
 
-impl<T: IsAdapter> Interface<T> {
+impl Interface {
     pub fn add_uuid(&mut self) {
         self.uuid = Some(Uuid::new_v4().to_string());
         self.signals.add_uuid()

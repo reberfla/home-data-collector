@@ -24,3 +24,4 @@ actix-cors = "0.7.0"
 serde_with = { version = "3.11.0", features = ["macros"] }
 serde_yml = "0.0.12"
 regex = "1.11.1"
+

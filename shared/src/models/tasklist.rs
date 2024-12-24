@@ -1,4 +1,4 @@
-use super::interface::{Interface, InterfaceModel, IsAdapter};
+use super::interface::{Interface, IsAdapter};
 use super::shelly_v1_adapter_light::ShellyV1AdapterLight;
 use super::shelly_v2_adapter_light::ShellyV2AdapterLight;
 use serde::{Deserialize, Serialize};
