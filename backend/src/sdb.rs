@@ -3,7 +3,7 @@ use std::str::FromStr;
 
 use crate::config::ServerConfig;
 use surrealdb::engine::remote::ws::{Client, Ws};
-use surrealdb::{opt::auth::Root, Surreal};
+use surrealdb::{opt::auth::Database, Surreal};
 
 #[derive(Clone)]
 pub struct SDBRepository {
@@ -17,15 +17,12 @@ impl SDBRepository {
                 .await
                 .expect("Can't connect to SurrealBD instance!");
         client
-            .signin(Root {
+            .signin(Database {
                 username: &config.db_username,
                 password: &config.db_password,
+                namespace: &config.db_namespace,
+                database: &config.db_database,
             })
-            .await
-            .unwrap();
-        client
-            .use_ns(&config.db_namespace)
-            .use_db(&config.db_database)
             .await
             .unwrap();
         SDBRepository { db: client }
