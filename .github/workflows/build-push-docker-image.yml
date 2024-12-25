@@ -36,11 +36,14 @@ jobs:
         with:
           path: /tmp/.buildx-cache
           key: target-artifacts
-      - if: steps.restore-cache-target.outputs.cache-hit != 'true'
-        run: | 
-          mkdir -p /tmp/.buildx-cache
-          mkdir -p /tmp/.buildx-cache-new
+
+      - name: Create cache directory if cache not found
+        if: steps.restore-cache-target.outputs.cache-hit != 'true'
+        run: mkdir -p /tmp/.buildx-cache
       
+      - name: Create buildx cache to directory
+        run: mkdir -p /tmp/.buildx-cache-new
+
       - name: Build and push Docker images
         id: build-push
         uses: docker/bake-action@v4
