@@ -27,7 +27,7 @@ async fn main() -> std::io::Result<()> {
 
     std::env::set_var("RUST_LOG", &config.loglevel);
     env_logger::init();
-    debug!("{:?}", config);
+    debug!("{}", config);
 
     let sdb_repo: SDBRepository = SDBRepository::init(&config).await;
 

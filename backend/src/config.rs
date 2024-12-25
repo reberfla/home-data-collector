@@ -6,6 +6,7 @@ use std::env::VarError;
 use std::fs;
 use std::io;
 use std::u16;
+use std::fmt;
 
 #[derive(Serialize, Deserialize)]
 struct ServerConfigYml {
@@ -46,6 +47,16 @@ pub struct ServerConfig {
     pub db_password: String,
     pub db_namespace: String,
     pub db_database: String,
+}
+
+impl fmt::Display for ServerConfig {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "ServerConfig {{ loglevel: {}, listen_address: {}, listen_port: {}, db_address: {}, db_port: {}, db_username: {}, db_namespace: {}, db_database: {} }}",
+            self.loglevel, self.listen_address, self.listen_port, self.db_address, self.db_port, self.db_username, self.db_namespace, self.db_database
+        )
+    }
 }
 
 impl ServerConfig {

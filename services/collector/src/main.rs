@@ -3,6 +3,7 @@ use config::CollectorConfig;
 use log::{debug, info, warn};
 use std::sync::{Arc, RwLock};
 use std::time::SystemTime;
+use std::fs;
 use tokio::sync::{mpsc::channel, OnceCell};
 use tokio::time::{interval_at, Duration, Instant};
 
@@ -25,6 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     std::env::set_var("RUST_LOG", &config.loglevel);
     env_logger::init();
     debug!("{:?}", config);
+    fs::create_dir_all(&config.buffer_path);
     let (send, mut recv) = channel::<IngestionPacket>(32);
 
     tasklist_observer(&TASKLIST, &config.tasklist_url).await;

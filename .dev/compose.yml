@@ -11,8 +11,8 @@ services:
       - root
       - --pass
       - root
-      - rocksdb:/data/surreal_db
+      - rocksdb:/data/surrealdb
     ports:
       - 8000:8000
     volumes:
-      - "./data:/surreal_db"
+      - "./data/surrealdb:/data/surrealdb"

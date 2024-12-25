@@ -11,5 +11,5 @@ ingestion:
   buffer_ingestion_interval: 300
 
 buffer:
-  buffer_path: "/data_buffer"
+  buffer_path: "/data/buffer"
 

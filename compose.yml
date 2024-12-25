@@ -7,17 +7,13 @@ services:
     entrypoint: 
       - /surreal 
       - start 
-      - --user
-      - ${DB_USER}
-      - --pass
-      - ${DB_PASS}
-      - rocksdb:/data/surreal_db
+      - rocksdb:/data/surrealdb
     env_file:
       - ./.env
     ports:
       - 8000:8000
     volumes:
-      - "./data:/surreal_db"
+      - "./data/surrealdb:/data/surrealdb"
     healthcheck:
       test: ["CMD", "isready"] 
       interval: 30s
@@ -34,7 +30,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./backend_config_template.yml:/Config.yml
+      - ./backend_config.yml:/Config.yml
     env_file:
       - ./.env
     environment:
@@ -45,4 +41,5 @@ services:
     image: ghcr.io/reberfla/hdc-collector:latest
     restart: always
     volumes:
-      - ./collector_config_template.yml:/Config.yml
+      - ./collector_config.yml:/Config.yml
+      - ./data/buffer:/data/buffer
