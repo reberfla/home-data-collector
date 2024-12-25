@@ -36,6 +36,10 @@ jobs:
         with:
           path: /tmp/.buildx-cache
           key: target-artifacts
+      - if: steps.restore-cache-target.outputs.cache-hit != 'true'
+        run: | 
+          mkdir -p /tmp/.buildx-cache
+          mkdir -p /tmp/.buildx-cache-new
       
       - name: Build and push Docker images
         id: build-push
