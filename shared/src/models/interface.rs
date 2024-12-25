@@ -45,9 +45,9 @@ impl Interface {
         self.uuid.clone()
     }
     pub fn check_update(&self, new_value: &Self) -> bool {
-        if self == new_value {
+        if self.get_uuid() == new_value.get_uuid() {
             let existing_signals = self.get_signals();
-            let update_signals = self.signals.get_signals();
+            let update_signals = new_value.get_signals();
             let success: Option<()> = existing_signals
                 .iter()
                 .zip(update_signals.iter())
@@ -102,6 +102,7 @@ pub struct Interface
     pub uuid: Option<String>,
     pub name: String,
     pub url: String,
+    pub interface_type: String,
     pub signals: Adapter,
 }
 
