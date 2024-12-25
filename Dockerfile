@@ -46,9 +46,9 @@ RUN --mount=type=bind,source=backend,target=backend \
     --mount=type=bind,source=services,target=services \
     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
-    --mount=type=cache,target=/app/target/,id=rust-cache-${WORKSPACE_NAME}-${TARGETPLATFORM} \
-    --mount=type=cache,target=/usr/local/cargo/git/db \
-    --mount=type=cache,target=/usr/local/cargo/registry/ \
+    --mount=type=cache,target=/app/target/,id=rust-cache-${WORKSPACE_NAME}-${TARGETPLATFORM},sharing=locked \
+    --mount=type=cache,target=/usr/local/cargo/git/db,sharing=locked \
+    --mount=type=cache,target=/usr/local/cargo/registry/,sharing=locked \
     <<EOF
 set -e
 xx-cargo build --locked --release --target-dir ./target
