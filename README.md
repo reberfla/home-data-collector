@@ -32,9 +32,9 @@ sudo docker run --rm --pull always -p 8000:8000 \
     * change/remove root level login params
 * get the relevant files onto your device:
 ```
-wget https://githubusercontent.com/reberfla/home-data-collector/master/compose.yml
-wget https://githubusercontent.com/reberfla/home-data-collector/master/collector_config.yml
-wget https://githubusercontent.com/reberfla/home-data-collector/master/backend_config.yml
+wget https://raw.githubusercontent.com/reberfla/home-data-collector/master/compose.yml
+wget https://raw.githubusercontent.com/reberfla/home-data-collector/master/collector_config.yml
+wget https://raw.githubusercontent.com/reberfla/home-data-collector/master/backend_config.yml
 ```
 * create `.env` file, add variables `DB_USER` AND `DB_PASS`
 * ajdust the `collector_config.yml` and `backend_config.yml` to your needs
