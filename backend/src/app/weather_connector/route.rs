@@ -25,7 +25,7 @@ pub async fn ingest_weather(
     content_length: Header<ContentLength>,
     data: Form<WeatherResponse>,
     req: HttpRequest,
-) -> Result<Json<String>, actix_web::Error> {
+) -> Result<Json<String>, Error> {
     let instance: &str = req.path();
     let meta = sdb_repo
         .get_weather_meta(req.peer_addr().unwrap().ip().to_string(), instance)
@@ -33,7 +33,10 @@ pub async fn ingest_weather(
     let data_points = data.into_inner().to_ingestion_packet(meta?.get_signals());
     match sdb_repo.ingest_data(data_points).await {
         IngestionResponse::Success => Ok(Json("Success".to_string())),
-        IngestionResponse::MultiStatus(response) => Ok(Json(response.to_string())),
+        IngestionResponse::MultiStatus(response) => Err(Error::PartialIngestion {
+            instance: instance.to_owned(),
+            data: response
+        })
     }
 }
 

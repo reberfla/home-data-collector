@@ -16,21 +16,22 @@ pub struct MultiStatusData {
     pub already_exists: Vec<Measurement>,
 }
 
-impl fmt::Display for MultiStatusData {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for dp in &self.success {
-            write!(f, "\t{}", dp)?;
-        }
-        for dp in &self.failed {
-            write!(f, "\t{}", dp)?;
-        }
-        for dp in &self.already_exists {
-            write!(f, "\t{}", dp)?;
-        }
-        Ok(())
-    }
-}
+//impl fmt::Display for MultiStatusData {
+//    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//        for dp in &self.success {
+//            write!(f, "\t{}", dp)?;
+//        }
+//        for dp in &self.failed {
+//            write!(f, "\t{}", dp)?;
+//        }
+//        for dp in &self.already_exists {
+//            write!(f, "\t{}", dp)?;
+//        }
+//        Ok(())
+//    }
+//}
 
+#[derive(Serialize, Deserialize)]
 pub enum IngestionResponse {
     Success,
     MultiStatus(MultiStatusData),
@@ -43,7 +44,7 @@ pub struct QueryTimeseriesData {
     pub time_to: i64,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct DataPoint {
     pub timestamp: i64,
     pub value: f64,
@@ -77,10 +78,10 @@ pub enum QueryResponse {
     Failed,
 }
 
-impl ResponseError for MultiStatusData {
-    fn error_response(&self) -> HttpResponse {
-        HttpResponse::build(StatusCode::MULTI_STATUS)
-            .insert_header(ContentType::json())
-            .body(serde_json::to_string(&self).unwrap())
-    }
-}
+//impl ResponseError for MultiStatusData {
+//    fn error_response(&self) -> HttpResponse {
+//        HttpResponse::build(StatusCode::MULTI_STATUS)
+//            .insert_header(ContentType::json())
+//            .body(serde_json::to_string(&self).unwrap())
+//    }
+//}

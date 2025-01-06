@@ -51,7 +51,8 @@ async fn handle_response(
     } else {
         warn!("Ingestion partially failed, sending failed data to buffer.");
         let body_bytes = response_body.as_bytes();
-        let body_data: MultiStatusData = serde_json::from_slice(body_bytes).unwrap();
+        let body_details = serde_json::from_slice::<serde_json::Value>(body_bytes).unwrap();
+        let body_data: MultiStatusData = serde_json::from_value(body_details.get("detail").unwrap().clone()).unwrap();
         let data = IngestionPacket {
             data: body_data.failed,
         };

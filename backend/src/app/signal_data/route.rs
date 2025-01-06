@@ -48,11 +48,11 @@ pub async fn ingest_ts_data(
         })?;
     match sdb_repo.ingest_data(data_points).await {
         IngestionResponse::Success => Ok(Json("Success".to_string())),
-        IngestionResponse::MultiStatus(response) => Ok(Json(response.to_string())),
+        IngestionResponse::MultiStatus(response) => Err(Error::PartialIngestion { instance: instance.to_owned(), data: response })
     }
 }
 
-#[get("v1/query/timeseriesdata")]
+#[post("v1/query/timeseriesdata")]
 pub async fn query_timeseries(
     sdb_repo: Data<SDBRepository>,
     mut payload: Payload,

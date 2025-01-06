@@ -39,19 +39,28 @@ impl SDBRepository {
                 })
             }
         }
-        let created: Option<Interface> = self
+        let _: Option<Interface> = self
             .db
             .create(("interface", interface.get_uuid().clone().unwrap()))
-            .content(interface)
+            .content(interface.clone())
             .await
             .map_err(|e| Error::Db {
                 error: e,
                 instance: instance.to_owned(),
             })?;
-        match created {
-            Some(_) => Ok(()),
-            None => Ok(()),
-        }
+        for signal in interface.get_signals(){
+            let _: Option<SignalMeta> = self
+                .db
+                .create(("signal", signal.get_uuid().clone()))
+                .content(signal.clone())
+                .await
+                .map_err(|e| Error::Db {
+                    error: e,
+                    instance: instance.to_owned(),
+                })?;
+            }
+        
+        Ok(())
     }
 
     pub async fn get_tasks(&self, instance: &str) -> Result<Vec<CollectorTask>, Error> {

@@ -5,6 +5,7 @@ use crate::sdb::SDBRepository;
 use hdc_shared::models::ingestion_container::*;
 use hdc_shared::models::signal_data::*;
 use hdc_shared::models::signal_meta::SignalMeta;
+use log::info;
 
 impl SDBRepository {
     pub async fn ingest_data(&self, data: IngestionPacket) -> IngestionResponse {
@@ -53,7 +54,10 @@ impl SDBRepository {
             let signal_query: Result<Option<SignalMeta>, surrealdb::Error> =
                 self.db.select(("signal", &signal)).await;
             let signal_response = match signal_query {
-                Ok(response) => response.unwrap(),
+                Ok(response) => {
+                    info!("Signal response: {:?}", response);
+                    response.unwrap()
+                },
                 Err(_) => {
                     return Err(Error::QueryFailed {
                         instance: instance.to_string(),

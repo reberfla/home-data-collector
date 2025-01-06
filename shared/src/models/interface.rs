@@ -10,7 +10,7 @@ use serde_json;
 use std::mem::discriminant;
 use uuid::Uuid;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum Adapter {
     ShellyV1(ShellyV1Adapter),
     ShellyV2(ShellyV2Adapter),
@@ -96,7 +96,7 @@ pub trait IsAdapter {
     fn get_signals(&self) -> Vec<SignalMeta>;
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Interface
 {
     pub uuid: Option<String>,

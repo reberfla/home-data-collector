@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::io::{self, Error};
 use uuid::Uuid;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct ShellyV1Adapter {
     pub emeter_1: SignalMeta,
     pub emeter_2: SignalMeta,

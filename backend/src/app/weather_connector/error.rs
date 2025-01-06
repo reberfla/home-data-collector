@@ -8,6 +8,7 @@ use derive_more::Display;
 use derive_more::From;
 use serde::Serialize;
 use serde_with::SerializeDisplay;
+use hdc_shared::models::signal_data::MultiStatusData;
 
 pub type Result<T> = core::result::Result<T, Error>;
 #[derive(Debug, From)]
@@ -39,6 +40,12 @@ pub enum Error {
     },
     SomethingWrong {
         instance: String,
+    },
+    #[from]
+    PartialIngestion {
+        instance: String,
+        data: MultiStatusData,
+
     },
 
     #[from]
@@ -168,6 +175,13 @@ impl Error {
                 error.to_string(),
                 instance.to_string(),
             ),
+            Error::PartialIngestion { instance, data } => ProblemDetails::new(
+                None,
+                status_code,
+                "Partial Ingestion".to_owned(),
+                serde_json::to_string(&data).unwrap(),
+                instance.to_string(),
+            ),
             _ => ProblemDetails::new(
                 None,
                 status_code,
@@ -186,6 +200,7 @@ impl Error {
             Error::UpdateWeatherConnectorNotExists { .. } => 403,
             Error::UpdateFailed { .. } => 500,
             Error::SomethingWrong { .. } => 500,
+            Error::PartialIngestion { .. } => 207,
             _ => 400,
         }
     }

@@ -41,7 +41,12 @@ pub enum Error {
         error: serde_json::Error,
         instance: String,
     },
+    #[from]
+    PartialIngestion {
+        instance: String,
+        data: MultiStatusData,
 
+    },
     #[from]
     Payload {
         error: actix_web::error::PayloadError,
@@ -129,6 +134,13 @@ impl Error {
                 error.to_string(),
                 instance.to_string(),
             ),
+            Error::PartialIngestion { instance, data } => ProblemDetails::new(
+                None,
+                status_code,
+                "Partial Ingestion".to_owned(),
+                serde_json::to_string(&data).unwrap(),
+                instance.to_string(),
+            ),
             _ => ProblemDetails::new(
                 None,
                 status_code,
@@ -141,6 +153,7 @@ impl Error {
     fn map_status_code(&self) -> u16 {
         match self {
             Error::SomethingWrong { .. } => 500,
+            Error::PartialIngestion { .. } => 207,
             _ => 400,
         }
     }
